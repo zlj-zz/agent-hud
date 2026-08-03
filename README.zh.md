@@ -1,59 +1,46 @@
 # agent-hud
 
-给 **Claude Code** 和 **Cursor CLI** 用的双行彩色 statusline。
+给 **Claude Code** / **Cursor CLI** 用的轻量双行 statusline。
 
-```
-◆ Opus 4.6  ·  my-project  ·  git:main*
-上下文 ▰▰▰▰▰▱▱▱▱▱  45%  │  用量 ▰▰▰▱▱▱▱▱▱▱  25% · 1h30m
-```
+## 设计
+
+- 脚本化，无构建
+- **LuaJIT** 核心 + 内置 **dkjson.lua**
+- Bash 只做薄入口
+- 刻意不做 claude-hud 那种 tools/agents/todos 全量解析
 
 ## 依赖
 
-`bash`、`jq`、`git`
+- `luajit`（`brew install luajit`）
+- `git`
 
 ## 安装
 
 ```bash
 cd ~/projects/agent-hud
-./install.sh            # 两个都装
-# ./install.sh --claude
-# ./install.sh --cursor
+./install.sh
 ```
 
-配置写入位置：
+## 配置（`config.jsonc`）
 
-- Claude：`~/.claude/settings.json`
-- Cursor：优先 `$XDG_CONFIG_HOME/cursor/cli-config.json`（你这台机器就是这里）
+支持 `//` / `/* */` 注释；运行时先剥注释再交给 `dkjson`，不用换库。
 
-安装后会生成指向本仓库的包装脚本，之后 `git pull` 即可更新。
-
-## 配置（`config.jsonl`）
-
-每行一个 JSON。第一项是语言，支持双语 `zh` / `en`：
-
-```jsonl
-{"language":"zh"}
+```jsonc
+{
+  // "en" | "zh"
+  "language": "zh",
+  "bar_filled": "▰",
+  "bar_empty": "▱",
+  "show_effort": true,
+  "show_prompt_cache": true,
+  "prompt_cache_ttl": 300
+}
 ```
 
-改成英文：
-
-```jsonl
-{"language":"en"}
-```
-
-进度条符号（两个独立配置项）：
-
-```jsonl
-{"bar_filled":"█"}
-{"bar_empty":"░"}
-```
-
-默认是 `▰` / `▱`。也可在用户目录覆盖：`~/.config/agent-hud/config.jsonl`（或设 `$AGENT_HUD_CONFIG`）。
+用户覆盖：`~/.config/agent-hud/config.jsonc`（或 `$AGENT_HUD_CONFIG`）。
 
 ## 预览
 
 ```bash
-echo '{"model":{"display_name":"Opus"},"cwd":"'"$PWD"'","context_window":{"used_percentage":42}}' | ./bin/claude.sh
+echo '{"model":{"display_name":"Opus"},"cwd":"'"$PWD"'","context_window":{"used_percentage":42},"effort":{"level":"high"}}' | ./bin/claude.sh
 ```
-
-改完配置后**重启** Claude Code / Cursor CLI 会话。

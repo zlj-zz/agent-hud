@@ -1,90 +1,88 @@
 # agent-hud
 
-Small dual-line statusline scripts for **Claude Code** and **Cursor CLI**.
+Lightweight dual-line statusline for **Claude Code** and **Cursor CLI**.
 
 ```
-◆ Opus 4.6  ·  my-project  ·  git:main*
-上下文 ▰▰▰▰▰▱▱▱▱▱  45%  │  用量 ▰▰▰▱▱▱▱▱▱▱  25% · 1h30m
+◆ Opus 4.6 ● max  ·  my-project  ·  git:main*
+Context ▰▰▰▰▰▱▱▱▱▱  45%  │  Usage ▰▰▰▱▱▱▱▱▱▱  25% · 1h30m  │  Cache ⏱ 4m 12s
 ```
+
+## Design
+
+- Script-first, no build step
+- **LuaJIT** core + vendored **dkjson.lua**
+- Thin Bash wrappers for `statusLine.command`
+- Deliberately smaller than claude-hud (no tools/agents/todos stream)
 
 ## Requirements
 
-- `bash`, `jq`, `git`
-- macOS/Linux (Homebrew `jq` path is included)
+- `luajit` (e.g. `brew install luajit`)
+- `git`
+- macOS / Linux
 
 ## Install
 
 ```bash
-git clone <your-remote-url> ~/projects/agent-hud
 cd ~/projects/agent-hud
 ./install.sh            # both
 # ./install.sh --claude
 # ./install.sh --cursor
-# ./install.sh --link   # symlink instead of wrapper
 ```
-
-`install.sh` writes:
 
 | Target | Script | Config |
 |--------|--------|--------|
 | Claude Code | `~/.claude/statusline.sh` | `~/.claude/settings.json` |
-| Cursor CLI | `~/.cursor/statusline.sh` | `$CURSOR_CONFIG_DIR/cli-config.json`, else `$XDG_CONFIG_HOME/cursor/cli-config.json`, else `~/.cursor/cli-config.json` |
-
-Wrappers point back into this repo, so `git pull` updates the live statusline.
+| Cursor CLI | `~/.cursor/statusline.sh` | `$XDG_CONFIG_HOME/cursor/cli-config.json` (or `~/.cursor`) |
 
 ## Preview
 
 ```bash
-echo '{"model":{"display_name":"Opus"},"cwd":"'"$PWD"'","context_window":{"used_percentage":42}}' \
+echo '{"model":{"display_name":"Opus"},"cwd":"'"$PWD"'","context_window":{"used_percentage":42},"effort":{"level":"high"}}' \
   | ./bin/claude.sh
-
-echo '{"model":{"display_name":"Composer","param_summary":"(Thinking)"},"cwd":"'"$PWD"'","context_window":{"used_percentage":38}}' \
-  | ./bin/cursor.sh
 ```
 
-## Config (`config.jsonl`)
+## Config (`config.jsonc`)
 
-One JSON object per line. First setting is language (bilingual `zh` / `en`):
+JSONC (`//` and `/* */` comments). Comments are stripped before `dkjson` — no library change.
 
-```jsonl
-{"language":"zh"}
+```jsonc
+{
+  // "en" | "zh"
+  "language": "en",
+  "bar_filled": "▰",
+  "bar_empty": "▱",
+  "show_effort": true,
+  "show_prompt_cache": true,
+  "prompt_cache_ttl": 300,
+  "week_threshold": 80
+}
 ```
-
-Optional later lines, for example:
-
-```jsonl
-{"language":"en"}
-{"bar_filled":"█"}
-{"bar_empty":"░"}
-{"week_threshold":80}
-```
-
-Progress bar characters:
 
 | Key | Default | Meaning |
 |-----|---------|---------|
-| `bar_filled` | `▰` | Filled segment |
-| `bar_empty` | `▱` | Empty segment |
+| `language` | `en` | `zh` / `en` labels |
+| `bar_filled` / `bar_empty` | `▰` / `▱` | Progress glyphs |
+| `show_effort` | `true` | Model effort badge |
+| `show_prompt_cache` | `true` | Cache countdown via transcript tail scan |
+| `prompt_cache_ttl` | `300` | Seconds (use `3600` for Max-style 1h) |
+| `week_threshold` | `80` | Show 7-day usage at/above this % |
 
-Lookup order:
-
-1. `$AGENT_HUD_CONFIG`
-2. `$XDG_CONFIG_HOME/agent-hud/config.jsonl` or `~/.config/agent-hud/config.jsonl`
-3. `~/.agent-hud/config.jsonl`
-4. repo `config.jsonl`
+Lookup: `$AGENT_HUD_CONFIG` → `~/.config/agent-hud/config.jsonc` → repo `config.jsonc`  
+(also accepts plain `.json`)
 
 ## Layout
 
 ```
-bin/claude.sh   # Claude Code (model / git / context / usage)
-bin/cursor.sh   # Cursor CLI  (model / git / context / worktree / vim)
-lib/common.sh   # shared colors + bars + i18n
-config.jsonl    # defaults (language, …)
+bin/claude.sh    # Claude entry
+bin/cursor.sh    # Cursor entry
+lib/hud.lua      # core renderer
+lib/dkjson.lua   # vendored JSON (David Kolf)
+config.jsonc
 install.sh
 ```
 
 ## Notes
 
-- Cursor’s built-in footer (`Auto · 43%`) is separate; this statusline renders above the prompt.
-- Claude usage bars only appear when stdin includes subscriber `rate_limits`.
-- Restart the CLI session after install.
+- Cursor’s built-in footer is separate from this statusline.
+- Usage bars need Claude subscriber `rate_limits` on stdin.
+- Restart the CLI session after first install; `config.jsonc` changes apply on next refresh.

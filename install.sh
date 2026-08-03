@@ -59,9 +59,8 @@ need() {
   }
 }
 
-need jq
+need luajit
 need git
-need python3
 
 install_wrapper() {
   local name="$1" src="$2" dest="$3"
@@ -119,7 +118,7 @@ print(f"updated {path} statusLine")
 PY
 }
 
-chmod +x "$ROOT/bin/claude.sh" "$ROOT/bin/cursor.sh" "$ROOT/lib/common.sh"
+chmod +x "$ROOT/bin/claude.sh" "$ROOT/bin/cursor.sh" "$ROOT/lib/hud.lua"
 
 if (( DO_CLAUDE == 1 )); then
   install_wrapper claude "$ROOT/bin/claude.sh" "$TARGET_CLAUDE"

@@ -1,0 +1,19 @@
+{
+  // Label language: "en" | "zh"
+  "language": "en",
+
+  // Progress bar glyphs
+  "bar_filled": "▰",
+  "bar_empty": "▱",
+
+  // Show reasoning effort next to the model (○/◔/◑/◕/●)
+  "show_effort": true,
+
+  // Prompt-cache countdown from transcript_path
+  "show_prompt_cache": true,
+  // Seconds; use 3600 for Max-style 1h windows
+  "prompt_cache_ttl": 300,
+
+  // Show 7-day usage when at/above this percent
+  "week_threshold": 80
+}
