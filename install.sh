@@ -118,7 +118,7 @@ print(f"updated {path} statusLine")
 PY
 }
 
-chmod +x "$ROOT/bin/claude.sh" "$ROOT/bin/cursor.sh" "$ROOT/lib/hud.lua"
+chmod +x "$ROOT/bin/claude.sh" "$ROOT/bin/cursor.sh"
 
 if (( DO_CLAUDE == 1 )); then
   install_wrapper claude "$ROOT/bin/claude.sh" "$TARGET_CLAUDE"

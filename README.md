@@ -10,7 +10,7 @@ Context ▰▰▰▰▰▱▱▱▱▱  45%  │  Usage ▰▰▰▱▱▱▱▱
 ## Design
 
 - Script-first, no build step
-- **LuaJIT** core + vendored **dkjson.lua**
+- **LuaJIT** core + vendored **hud.dkjson**
 - Thin Bash wrappers for `statusLine.command`
 - Deliberately smaller than claude-hud (no tools/agents/todos stream)
 
@@ -73,10 +73,13 @@ Lookup: `$AGENT_HUD_CONFIG` → `~/.config/agent-hud/config.jsonc` → repo `con
 ## Layout
 
 ```
-bin/claude.sh    # Claude entry
-bin/cursor.sh    # Cursor entry
-lib/hud.lua      # core renderer
-lib/dkjson.lua   # vendored JSON (David Kolf)
+bin/claude.sh / bin/cursor.sh   # set LUA_PATH → require("hud").main(...)
+lib/hud/                        # self-contained library package
+  init.lua                      # exports main()
+  dkjson.lua                    # vendored JSON (David Kolf)
+  ansi.lua config.lua i18n.lua
+  util.lua git.lua effort.lua
+  cache.lua render.lua
 config.jsonc
 install.sh
 ```
