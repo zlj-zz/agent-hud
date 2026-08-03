@@ -41,7 +41,14 @@ cd ~/projects/agent-hud
 {"language":"en"}
 ```
 
-也可在用户目录覆盖：`~/.config/agent-hud/config.jsonl`（或设 `$AGENT_HUD_CONFIG`）。
+进度条符号（两个独立配置项）：
+
+```jsonl
+{"bar_filled":"█"}
+{"bar_empty":"░"}
+```
+
+默认是 `▰` / `▱`。也可在用户目录覆盖：`~/.config/agent-hud/config.jsonl`（或设 `$AGENT_HUD_CONFIG`）。
 
 ## 预览
 

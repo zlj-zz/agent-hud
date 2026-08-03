@@ -54,8 +54,17 @@ Optional later lines, for example:
 
 ```jsonl
 {"language":"en"}
+{"bar_filled":"█"}
+{"bar_empty":"░"}
 {"week_threshold":80}
 ```
+
+Progress bar characters:
+
+| Key | Default | Meaning |
+|-----|---------|---------|
+| `bar_filled` | `▰` | Filled segment |
+| `bar_empty` | `▱` | Empty segment |
 
 Lookup order:
 

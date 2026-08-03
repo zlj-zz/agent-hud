@@ -16,8 +16,10 @@ BRIGHT_MAGENTA=$'\033[95m'
 RED=$'\033[31m'
 
 # Defaults — overridden by config.jsonl
-AH_LANGUAGE="zh"
+AH_LANGUAGE="en"
 AH_WEEK_THRESHOLD=80
+AH_BAR_FILLED="▰"
+AH_BAR_EMPTY="▱"
 
 # Resolve config file: env > user override > repo config.jsonl
 config_path() {
@@ -40,11 +42,21 @@ config_path() {
   printf '%s' "${ROOT}/config.jsonl"
 }
 
-# Each JSONL line is one setting object. Supported keys (first occurrence wins):
+# Read a top-level key or {"key":"...","value":...} from one JSONL line.
+jsonl_get() {
+  local line="$1" key="$2"
+  printf '%s' "$line" | jq -r --arg k "$key" \
+    'if has($k) then .[$k] elif .key == $k then (.value // empty) else empty end' \
+    2>/dev/null || true
+}
+
+# Each JSONL line is one setting object. Supported keys (later lines can override):
 #   {"language":"zh"|"en"}
 #   {"week_threshold":80}
+#   {"bar_filled":"▰"}
+#   {"bar_empty":"▱"}
 load_config() {
-  local path line lang thr
+  local path line lang thr filled empty
   path="$(config_path)"
   [[ -f "$path" ]] || return 0
 
@@ -52,7 +64,7 @@ load_config() {
     [[ -z "${line//[[:space:]]/}" ]] && continue
     [[ "$line" == \#* ]] && continue
 
-    lang=$(printf '%s' "$line" | jq -r 'if has("language") then .language elif .key == "language" then (.value // empty) else empty end' 2>/dev/null || true)
+    lang=$(jsonl_get "$line" language)
     if [[ -n "$lang" && "$lang" != "null" ]]; then
       case "$lang" in
         zh|zh-Hans|zh-CN|cn) AH_LANGUAGE="zh" ;;
@@ -60,11 +72,19 @@ load_config() {
       esac
     fi
 
-    thr=$(printf '%s' "$line" | jq -r 'if has("week_threshold") then .week_threshold elif .key == "week_threshold" then (.value // empty) else empty end' 2>/dev/null || true)
-    if [[ -n "$thr" && "$thr" != "null" ]]; then
-      if [[ "$thr" =~ ^[0-9]+$ ]]; then
-        AH_WEEK_THRESHOLD="$thr"
-      fi
+    thr=$(jsonl_get "$line" week_threshold)
+    if [[ -n "$thr" && "$thr" != "null" && "$thr" =~ ^[0-9]+$ ]]; then
+      AH_WEEK_THRESHOLD="$thr"
+    fi
+
+    filled=$(jsonl_get "$line" bar_filled)
+    if [[ -n "$filled" && "$filled" != "null" ]]; then
+      AH_BAR_FILLED="$filled"
+    fi
+
+    empty=$(jsonl_get "$line" bar_empty)
+    if [[ -n "$empty" && "$empty" != "null" ]]; then
+      AH_BAR_EMPTY="$empty"
     fi
   done <"$path"
 }
@@ -91,8 +111,10 @@ bar() {
   (( filled > width )) && filled=$width
   (( filled < 0 )) && filled=0
   local empty=$(( width - filled )) out="" i
-  for (( i = 0; i < filled; i++ )); do out+="▰"; done
-  for (( i = 0; i < empty; i++ )); do out+="▱"; done
+  local fill_ch="${AH_BAR_FILLED:-▰}"
+  local empty_ch="${AH_BAR_EMPTY:-▱}"
+  for (( i = 0; i < filled; i++ )); do out+="$fill_ch"; done
+  for (( i = 0; i < empty; i++ )); do out+="$empty_ch"; done
   printf '%s' "$out"
 }
 
