@@ -5,6 +5,7 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 # shellcheck source=../lib/common.sh
 source "$ROOT/lib/common.sh"
+load_config
 
 input=$(cat)
 
@@ -35,5 +36,5 @@ printf '%s◆%s %s%s%s%s  %s·%s  %s%s%s%s\n' \
 if [[ -n "$CTX_PCT" ]]; then
   printf '%b\n' "$(print_context_segment "$CTX_PCT")"
 else
-  printf '%s等待会话数据…%s\n' "$DIM" "$RST"
+  printf '%s%s%s\n' "$DIM" "$(t waiting)" "$RST"
 fi

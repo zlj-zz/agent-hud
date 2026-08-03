@@ -5,6 +5,7 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 # shellcheck source=../lib/common.sh
 source "$ROOT/lib/common.sh"
+load_config
 
 input=$(cat)
 
@@ -28,23 +29,25 @@ fi
 if [[ -n "$USAGE_PCT" ]]; then
   UC=$(usage_color "$USAGE_PCT")
   RESET_LABEL=$(rel_time "$USAGE_RESET")
+  USAGE_LABEL=$(t usage)
   [[ -n "$LINE2" ]] && LINE2+="  ${DIM}│${RST}  "
-  LINE2+=$(printf '%s用量%s %s%s%s %s%d%%%s' \
-    "$DIM" "$RST" "$UC" "$(bar "$USAGE_PCT")" "$RST" "$UC$BOLD" "$USAGE_PCT" "$RST")
+  LINE2+=$(printf '%s%s%s %s%s%s %s%d%%%s' \
+    "$DIM" "$USAGE_LABEL" "$RST" "$UC" "$(bar "$USAGE_PCT")" "$RST" "$UC$BOLD" "$USAGE_PCT" "$RST")
   if [[ -n "$RESET_LABEL" ]]; then
     LINE2+=$(printf ' %s· %s%s' "$DIM" "$RESET_LABEL" "$RST")
   fi
 fi
 
-if [[ -n "$WEEK_PCT" ]] && (( WEEK_PCT >= 80 )); then
+if [[ -n "$WEEK_PCT" ]] && (( WEEK_PCT >= AH_WEEK_THRESHOLD )); then
   WC=$(usage_color "$WEEK_PCT")
+  WEEK_LABEL=$(t week)
   [[ -n "$LINE2" ]] && LINE2+="  ${DIM}│${RST}  "
-  LINE2+=$(printf '%s7天%s %s%s%s %s%d%%%s' \
-    "$DIM" "$RST" "$WC" "$(bar "$WEEK_PCT")" "$RST" "$WC$BOLD" "$WEEK_PCT" "$RST")
+  LINE2+=$(printf '%s%s%s %s%s%s %s%d%%%s' \
+    "$DIM" "$WEEK_LABEL" "$RST" "$WC" "$(bar "$WEEK_PCT")" "$RST" "$WC$BOLD" "$WEEK_PCT" "$RST")
 fi
 
 if [[ -n "$LINE2" ]]; then
   printf '%b\n' "$LINE2"
 else
-  printf '%s等待会话数据…%s\n' "$DIM" "$RST"
+  printf '%s%s%s\n' "$DIM" "$(t waiting)" "$RST"
 fi

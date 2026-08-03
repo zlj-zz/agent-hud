@@ -15,6 +15,76 @@ BRIGHT_BLUE=$'\033[94m'
 BRIGHT_MAGENTA=$'\033[95m'
 RED=$'\033[31m'
 
+# Defaults — overridden by config.jsonl
+AH_LANGUAGE="zh"
+AH_WEEK_THRESHOLD=80
+
+# Resolve config file: env > user override > repo config.jsonl
+config_path() {
+  if [[ -n "${AGENT_HUD_CONFIG:-}" ]]; then
+    printf '%s' "$AGENT_HUD_CONFIG"
+    return 0
+  fi
+  if [[ -n "${XDG_CONFIG_HOME:-}" && -f "${XDG_CONFIG_HOME%/}/agent-hud/config.jsonl" ]]; then
+    printf '%s' "${XDG_CONFIG_HOME%/}/agent-hud/config.jsonl"
+    return 0
+  fi
+  if [[ -f "${HOME}/.config/agent-hud/config.jsonl" ]]; then
+    printf '%s' "${HOME}/.config/agent-hud/config.jsonl"
+    return 0
+  fi
+  if [[ -f "${HOME}/.agent-hud/config.jsonl" ]]; then
+    printf '%s' "${HOME}/.agent-hud/config.jsonl"
+    return 0
+  fi
+  printf '%s' "${ROOT}/config.jsonl"
+}
+
+# Each JSONL line is one setting object. Supported keys (first occurrence wins):
+#   {"language":"zh"|"en"}
+#   {"week_threshold":80}
+load_config() {
+  local path line lang thr
+  path="$(config_path)"
+  [[ -f "$path" ]] || return 0
+
+  while IFS= read -r line || [[ -n "$line" ]]; do
+    [[ -z "${line//[[:space:]]/}" ]] && continue
+    [[ "$line" == \#* ]] && continue
+
+    lang=$(printf '%s' "$line" | jq -r 'if has("language") then .language elif .key == "language" then (.value // empty) else empty end' 2>/dev/null || true)
+    if [[ -n "$lang" && "$lang" != "null" ]]; then
+      case "$lang" in
+        zh|zh-Hans|zh-CN|cn) AH_LANGUAGE="zh" ;;
+        en|english) AH_LANGUAGE="en" ;;
+      esac
+    fi
+
+    thr=$(printf '%s' "$line" | jq -r 'if has("week_threshold") then .week_threshold elif .key == "week_threshold" then (.value // empty) else empty end' 2>/dev/null || true)
+    if [[ -n "$thr" && "$thr" != "null" ]]; then
+      if [[ "$thr" =~ ^[0-9]+$ ]]; then
+        AH_WEEK_THRESHOLD="$thr"
+      fi
+    fi
+  done <"$path"
+}
+
+# Bilingual label lookup
+t() {
+  local key="$1"
+  case "$AH_LANGUAGE:$key" in
+    zh:context) printf '上下文' ;;
+    en:context) printf 'Context' ;;
+    zh:usage) printf '用量' ;;
+    en:usage) printf 'Usage' ;;
+    zh:week) printf '7天' ;;
+    en:week) printf '7d' ;;
+    zh:waiting) printf '等待会话数据…' ;;
+    en:waiting) printf 'Waiting for session data…' ;;
+    *) printf '%s' "$key" ;;
+  esac
+}
+
 bar() {
   local pct="${1:-0}" width="${2:-10}"
   local filled=$(( (pct * width + 50) / 100 ))
@@ -104,8 +174,9 @@ print_identity_line() {
 
 print_context_segment() {
   local pct="$1"
-  local cc
+  local cc label
   cc=$(context_color "$pct")
-  printf '%s上下文%s %s%s%s %s%d%%%s' \
-    "$DIM" "$RST" "$cc" "$(bar "$pct")" "$RST" "$cc$BOLD" "$pct" "$RST"
+  label=$(t context)
+  printf '%s%s%s %s%s%s %s%d%%%s' \
+    "$DIM" "$label" "$RST" "$cc" "$(bar "$pct")" "$RST" "$cc$BOLD" "$pct" "$RST"
 }

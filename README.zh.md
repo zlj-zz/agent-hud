@@ -27,6 +27,22 @@ cd ~/projects/agent-hud
 
 安装后会生成指向本仓库的包装脚本，之后 `git pull` 即可更新。
 
+## 配置（`config.jsonl`）
+
+每行一个 JSON。第一项是语言，支持双语 `zh` / `en`：
+
+```jsonl
+{"language":"zh"}
+```
+
+改成英文：
+
+```jsonl
+{"language":"en"}
+```
+
+也可在用户目录覆盖：`~/.config/agent-hud/config.jsonl`（或设 `$AGENT_HUD_CONFIG`）。
+
 ## 预览
 
 ```bash

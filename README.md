@@ -42,12 +42,35 @@ echo '{"model":{"display_name":"Composer","param_summary":"(Thinking)"},"cwd":"'
   | ./bin/cursor.sh
 ```
 
+## Config (`config.jsonl`)
+
+One JSON object per line. First setting is language (bilingual `zh` / `en`):
+
+```jsonl
+{"language":"zh"}
+```
+
+Optional later lines, for example:
+
+```jsonl
+{"language":"en"}
+{"week_threshold":80}
+```
+
+Lookup order:
+
+1. `$AGENT_HUD_CONFIG`
+2. `$XDG_CONFIG_HOME/agent-hud/config.jsonl` or `~/.config/agent-hud/config.jsonl`
+3. `~/.agent-hud/config.jsonl`
+4. repo `config.jsonl`
+
 ## Layout
 
 ```
 bin/claude.sh   # Claude Code (model / git / context / usage)
 bin/cursor.sh   # Cursor CLI  (model / git / context / worktree / vim)
-lib/common.sh   # shared colors + bars
+lib/common.sh   # shared colors + bars + i18n
+config.jsonl    # defaults (language, …)
 install.sh
 ```
 
