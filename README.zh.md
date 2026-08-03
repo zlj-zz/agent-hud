@@ -1,4 +1,4 @@
-# cli-statusline
+# agent-hud
 
 给 **Claude Code** 和 **Cursor CLI** 用的双行彩色 statusline。
 
@@ -14,7 +14,7 @@
 ## 安装
 
 ```bash
-cd ~/projects/cli-statusline
+cd ~/projects/agent-hud
 ./install.sh            # 两个都装
 # ./install.sh --claude
 # ./install.sh --cursor

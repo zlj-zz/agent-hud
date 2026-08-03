@@ -1,4 +1,4 @@
-# cli-statusline
+# agent-hud
 
 Small dual-line statusline scripts for **Claude Code** and **Cursor CLI**.
 
@@ -15,8 +15,8 @@ Small dual-line statusline scripts for **Claude Code** and **Cursor CLI**.
 ## Install
 
 ```bash
-git clone <your-remote-url> ~/projects/cli-statusline
-cd ~/projects/cli-statusline
+git clone <your-remote-url> ~/projects/agent-hud
+cd ~/projects/agent-hud
 ./install.sh            # both
 # ./install.sh --claude
 # ./install.sh --cursor
