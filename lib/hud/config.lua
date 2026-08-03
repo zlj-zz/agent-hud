@@ -12,6 +12,8 @@ M.values = {
   show_effort = true,
   show_prompt_cache = true,
   show_cache_hit = true,
+  -- Cursor only: badge when payload.autorun is true
+  show_autorun = true,
   prompt_cache_ttl = 300,
   -- "name" (basename) | "short" (~/…) | "full"
   cwd_style = "short",
@@ -132,6 +134,8 @@ local function apply(obj)
   if sc ~= nil then cfg.show_prompt_cache = sc end
   local sh = util.parse_bool(obj.show_cache_hit)
   if sh ~= nil then cfg.show_cache_hit = sh end
+  local sa = util.parse_bool(obj.show_autorun)
+  if sa ~= nil then cfg.show_autorun = sa end
 
   local ttl = obj.prompt_cache_ttl
   if type(ttl) == "number" and ttl > 0 then

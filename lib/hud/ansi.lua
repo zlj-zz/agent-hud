@@ -10,6 +10,7 @@ local M = {
   BRIGHT_BLUE = "\27[94m",
   BRIGHT_MAGENTA = "\27[95m",
   RED = "\27[31m",
+  MUTED_BLUE = "\27[38;2;163;176;198m",
 }
 
 return M

@@ -20,6 +20,9 @@
   // Last-turn cache hit % from context_window.current_usage
   "show_cache_hit": true,
 
+  // Cursor only: show "auto" when payload.autorun is true
+  "show_autorun": true,
+
   // Show 7-day usage when at/above this percent
   "week_threshold": 80
 }

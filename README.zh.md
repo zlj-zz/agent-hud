@@ -40,9 +40,12 @@ cd ~/projects/agent-hud
   "show_effort": true,
   "show_prompt_cache": true,
   "prompt_cache_ttl": 300,
-  "show_cache_hit": true
+  "show_cache_hit": true,
+  "show_autorun": true
 }
 ```
+
+Cursor 在 `autorun: true` 时于模型旁显示淡蓝灰 `autorun`（弥补自定义 statusline 换掉原生 footer）。Claude 不显示此项。
 
 用户覆盖：`~/.config/agent-hud/config.jsonc`（或 `$AGENT_HUD_CONFIG`）。
 

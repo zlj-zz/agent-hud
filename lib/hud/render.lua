@@ -130,6 +130,13 @@ function M.cursor(payload)
       end
     end
   end
+  local autorun = util.parse_bool(payload.autorun)
+  if config.values.show_autorun and autorun == true then
+    model_extra = model_extra .. string.format(
+      " %s%s%s",
+      ansi.MUTED_BLUE, i18n.t("autorun"), ansi.RST
+    )
+  end
 
   local extra = git.segment(cwd)
   if type(worktree) == "string" and worktree ~= "" then

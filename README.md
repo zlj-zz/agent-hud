@@ -57,6 +57,7 @@ JSONC (`//` and `/* */` comments). Comments are stripped before `dkjson` — no 
   "show_prompt_cache": true,
   "prompt_cache_ttl": 300,
   "show_cache_hit": true,
+  "show_autorun": true,
   "week_threshold": 80
 }
 ```
@@ -70,6 +71,7 @@ JSONC (`//` and `/* */` comments). Comments are stripped before `dkjson` — no 
 | `show_prompt_cache` | `true` | Cache TTL countdown via transcript tail scan |
 | `prompt_cache_ttl` | `300` | Seconds (use `3600` for Max-style 1h) |
 | `show_cache_hit` | `true` | Last-turn cache hit % from `current_usage` |
+| `show_autorun` | `true` | Cursor only: muted-blue `autorun` badge when `autorun` is true |
 | `week_threshold` | `80` | Show 7-day usage at/above this % |
 
 Lookup: `$AGENT_HUD_CONFIG` → `~/.config/agent-hud/config.jsonc` → repo `config.jsonc`  

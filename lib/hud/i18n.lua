@@ -9,6 +9,7 @@ local labels = {
     waiting = "等待会话数据…",
     cache = "缓存",
     hit = "命中",
+    autorun = "autorun",
     expired = "已过期",
   },
   en = {
@@ -18,6 +19,7 @@ local labels = {
     waiting = "Waiting for session data…",
     cache = "Cache",
     hit = "Hit",
+    autorun = "autorun",
     expired = "expired",
   },
 }
