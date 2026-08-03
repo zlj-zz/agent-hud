@@ -8,7 +8,9 @@ local i18n = require("hud.i18n")
 local util = require("hud.util")
 local render = require("hud.render")
 
-local M = {}
+local M = {
+  version = require("hud.version"),
+}
 
 local function detect_root()
   local src = debug.getinfo(1, "S").source

@@ -9,6 +9,8 @@
 - Bash 只做薄入口
 - 刻意不做 claude-hud 那种 tools/agents/todos 全量解析
 
+版本号在 `lib/hud/version.lua`，可用 `./bin/claude.sh --version` 查看。
+
 ## 依赖
 
 - `luajit`（`brew install luajit`）

@@ -75,13 +75,18 @@ Lookup: `$AGENT_HUD_CONFIG` → `~/.config/agent-hud/config.jsonc` → repo `con
 ```
 bin/claude.sh / bin/cursor.sh   # set LUA_PATH → require("hud").main(...)
 lib/hud/                        # self-contained library package
-  init.lua                      # exports main()
+  init.lua                      # exports main() + version
+  version.lua                   # release version (0.1.0)
   dkjson.lua                    # vendored JSON (David Kolf)
   ansi.lua config.lua i18n.lua
   util.lua git.lua effort.lua
   cache.lua render.lua
 config.jsonc
 install.sh
+```
+
+```bash
+./bin/claude.sh --version   # agent-hud 0.1.0
 ```
 
 ## Notes
