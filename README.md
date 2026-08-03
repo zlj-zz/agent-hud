@@ -58,6 +58,7 @@ JSONC (`//` and `/* */` comments). Comments are stripped before `dkjson` — no 
   "prompt_cache_ttl": 300,
   "show_cache_hit": true,
   "show_autorun": true,
+  "show_proxy": true,
   "week_threshold": 80
 }
 ```
@@ -72,6 +73,7 @@ JSONC (`//` and `/* */` comments). Comments are stripped before `dkjson` — no 
 | `prompt_cache_ttl` | `300` | Seconds (use `3600` for Max-style 1h) |
 | `show_cache_hit` | `true` | Last-turn cache hit % from `current_usage` |
 | `show_autorun` | `true` | Cursor only: muted-blue `autorun` badge when `autorun` is true |
+| `show_proxy` | `true` | Agent `HTTP(S)_PROXY` → bright-blue `⇄` (`#6CB6FF`) |
 | `week_threshold` | `80` | Show 7-day usage at/above this % |
 
 Lookup: `$AGENT_HUD_CONFIG` → `~/.config/agent-hud/config.jsonc` → repo `config.jsonc`  
@@ -87,7 +89,7 @@ lib/hud/                        # self-contained library package
   dkjson.lua                    # vendored JSON (David Kolf)
   ansi.lua config.lua i18n.lua
   util.lua git.lua effort.lua
-  cache.lua render.lua
+  cache.lua proxy.lua render.lua
 config.jsonc
 install.sh
 ```

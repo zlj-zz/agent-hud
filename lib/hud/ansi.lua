@@ -11,6 +11,8 @@ local M = {
   BRIGHT_MAGENTA = "\27[95m",
   RED = "\27[31m",
   MUTED_BLUE = "\27[38;2;163;176;198m",
+  -- Proxy ⇄ badge (#6CB6FF)
+  PROXY_BLUE = "\27[38;2;108;182;255m",
 }
 
 return M

@@ -14,6 +14,8 @@ M.values = {
   show_cache_hit = true,
   -- Cursor only: badge when payload.autorun is true
   show_autorun = true,
+  -- Agent HTTP(S)_PROXY only (custom ANTHROPIC_BASE_URL is not a proxy)
+  show_proxy = true,
   prompt_cache_ttl = 300,
   -- "name" (basename) | "short" (~/…) | "full"
   cwd_style = "short",
@@ -136,6 +138,11 @@ local function apply(obj)
   if sh ~= nil then cfg.show_cache_hit = sh end
   local sa = util.parse_bool(obj.show_autorun)
   if sa ~= nil then cfg.show_autorun = sa end
+  local sp = util.parse_bool(obj.show_proxy)
+  if sp ~= nil then cfg.show_proxy = sp end
+  -- back-compat with briefly-used show_vpn key
+  local sv = util.parse_bool(obj.show_vpn)
+  if sv ~= nil and sp == nil then cfg.show_proxy = sv end
 
   local ttl = obj.prompt_cache_ttl
   if type(ttl) == "number" and ttl > 0 then

@@ -6,6 +6,7 @@ local util = require("hud.util")
 local git = require("hud.git")
 local effort = require("hud.effort")
 local cache = require("hud.cache")
+local proxy = require("hud.proxy")
 
 local M = {}
 
@@ -67,7 +68,7 @@ function M.claude(payload)
     ansi.BOLD .. ansi.CYAN, model, ansi.RST, effort.segment(effort.level(payload)),
     ansi.DIM, ansi.RST,
     ansi.YELLOW, util.display_cwd(cwd, config.values.cwd_style), ansi.RST,
-    git.segment(cwd)
+    git.segment(cwd) .. proxy.segment("claude")
   )
 
   local parts = {}
@@ -155,7 +156,7 @@ function M.cursor(payload)
     ansi.BOLD .. ansi.CYAN, model, ansi.RST, model_extra,
     ansi.DIM, ansi.RST,
     ansi.YELLOW, util.display_cwd(cwd, config.values.cwd_style), ansi.RST,
-    extra
+    extra .. proxy.segment("cursor")
   )
 
   local parts = {}

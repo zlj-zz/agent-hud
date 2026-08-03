@@ -20,8 +20,11 @@
   // Last-turn cache hit % from context_window.current_usage
   "show_cache_hit": true,
 
-  // Cursor only: show "auto" when payload.autorun is true
+  // Cursor only: show "autorun" when payload.autorun is true
   "show_autorun": true,
+
+  // Agent HTTP(S)_PROXY only — custom ANTHROPIC_BASE_URL is not treated as proxy
+  "show_proxy": true,
 
   // Show 7-day usage when at/above this percent
   "week_threshold": 80

@@ -41,11 +41,14 @@ cd ~/projects/agent-hud
   "show_prompt_cache": true,
   "prompt_cache_ttl": 300,
   "show_cache_hit": true,
-  "show_autorun": true
+  "show_autorun": true,
+  "show_proxy": true
 }
 ```
 
 Cursor 在 `autorun: true` 时于模型旁显示淡蓝灰 `autorun`（弥补自定义 statusline 换掉原生 footer）。Claude 不显示此项。
+
+`show_proxy`：当前 agent 有 `HTTP(S)_PROXY` / `ALL_PROXY` 时，在 git 旁显示亮蓝 `⇄`（`#6CB6FF`）。自定义 API BASE_URL、仅系统 Clash 不算。
 
 用户覆盖：`~/.config/agent-hud/config.jsonc`（或 `$AGENT_HUD_CONFIG`）。
 
