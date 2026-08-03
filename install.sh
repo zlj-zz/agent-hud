@@ -164,5 +164,6 @@ if (( DO_CLAUDE == 1 )) || (( DO_CURSOR == 1 )); then
   echo '  echo '"'"'{"model":{"display_name":"Opus"},"cwd":"'"$PWD"'","context_window":{"used_percentage":42}}'"'"' | '"$ROOT/bin/claude.sh"
 fi
 if (( DO_PI == 1 )); then
-  echo "Run pi with /reload to load the agent-hud extension (or restart pi)."
+  echo "Pi extension installed: agent-hud"
+  echo "Run pi with /reload to load it (or restart pi)."
 fi
