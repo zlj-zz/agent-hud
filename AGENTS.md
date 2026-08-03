@@ -1,6 +1,7 @@
 # Agent notes — agent-hud
 
 Instructions for coding agents installing or updating this statusline for a user.
+Supports: Claude Code, Cursor CLI, pi coding agent.
 
 ## Goal
 
@@ -22,9 +23,10 @@ Already cloned: `cd ~/projects/agent-hud && git pull && ./install.sh`
 
 | Command | Effect |
 |---------|--------|
-| `./install.sh` | Claude **and** Cursor (default) |
+| `./install.sh` | Claude + Cursor + pi (default) |
 | `./install.sh --claude` | Claude Code only |
 | `./install.sh --cursor` | Cursor CLI only |
+| `./install.sh --pi` | pi coding agent only |
 | `./install.sh --link` | Symlink wrappers to this repo instead of thin `exec` scripts |
 
 ## Dependencies
@@ -38,7 +40,8 @@ Already cloned: `cd ~/projects/agent-hud && git pull && ./install.sh`
 
 | Target | Wrapper | Config key |
 |--------|---------|------------|
-| Claude Code | `~/.claude/statusline.sh` | `~/.claude/settings.json` → `statusLine` |
+| Claude Code | `~/.claude/statusline.sh` | pi | `~/.pi/agent/extensions/agent-hud/index.ts` | Auto-discovered by pi |
+| `~/.claude/settings.json` → `statusLine` |
 | Cursor CLI | `~/.cursor/statusline.sh` | `$CURSOR_CONFIG_DIR/cli-config.json` or `$XDG_CONFIG_HOME/cursor/cli-config.json` or `~/.cursor/cli-config.json` |
 
 - **Overwrites** existing `statusLine` (does not merge multiple commands).
@@ -51,7 +54,9 @@ Already cloned: `cd ~/projects/agent-hud && git pull && ./install.sh`
 echo '{"model":{"display_name":"Opus"},"cwd":"'"$PWD"'","context_window":{"used_percentage":42}}' | ./bin/claude.sh
 ```
 
-Tell the user to **restart** the Claude Code / Cursor CLI session after install.
+For pi, the extension shows a dual-line widget below the editor after `/reload` or pi restart.
+
+Tell the user to **restart** the Claude Code / Cursor CLI session after install. For pi, run `/reload` or restart pi.
 
 ## Config
 

@@ -1,6 +1,6 @@
 # agent-hud
 
-Lightweight dual-line statusline for **Claude Code** and **Cursor CLI**.
+Lightweight dual-line statusline for **Claude Code**, **Cursor CLI**, and **pi**.
 
 ```
 ◆ Opus 4.6 ● max · ~/projects/my-project · git:main* · ⇄
@@ -12,13 +12,14 @@ Context ▰▰▰▰▰▱▱▱▱▱ 45% │ Usage ▰▰▰▱▱▱▱▱▱
 ```bash
 git clone https://github.com/zlj-zz/agent-hud.git ~/projects/agent-hud
 cd ~/projects/agent-hud
-brew install luajit    # if needed
-./install.sh           # Claude + Cursor
+brew install luajit    # if needed (Claude/Cursor only)
+./install.sh           # Claude + Cursor + pi
 # ./install.sh --claude
 # ./install.sh --cursor
+# ./install.sh --pi
 ```
 
-Then **restart** the Claude Code / Cursor CLI session.
+Then **restart** the Claude Code / Cursor CLI session, or run `/reload` in pi.
 
 Coding agents: follow [AGENTS.md](AGENTS.md).
 
@@ -38,10 +39,11 @@ Coding agents: follow [AGENTS.md](AGENTS.md).
 
 ## What `./install.sh` changes
 
-| Target | Script | Config |
+| Target | Script / Extension | Config |
 |--------|--------|--------|
 | Claude Code | `~/.claude/statusline.sh` | `~/.claude/settings.json` → `statusLine` |
 | Cursor CLI | `~/.cursor/statusline.sh` | `$XDG_CONFIG_HOME/cursor/cli-config.json` (or `~/.cursor`, or `$CURSOR_CONFIG_DIR`) |
+| pi | `~/.pi/agent/extensions/agent-hud/index.ts` | Auto-discovered (no config change needed) |
 
 - Existing `statusLine` entries are **replaced**
 - Default install writes a small wrapper that `exec`s this repo’s `bin/*.sh` (so `git pull` picks up updates)
@@ -105,13 +107,14 @@ cd ~/projects/agent-hud && git pull
 
 ```
 bin/claude.sh / bin/cursor.sh   # set LUA_PATH → require("hud").main(...)
-lib/hud/                        # self-contained library package
+lib/hud/                        # self-contained Lua library package
   init.lua                      # exports main() + version
   version.lua                   # release version (0.1.0)
   dkjson.lua                    # vendored JSON (David Kolf)
   ansi.lua config.lua i18n.lua
   util.lua git.lua effort.lua
   cache.lua proxy.lua render.lua
+extensions/pi/index.ts          # pi extension (TypeScript, native)
 config.jsonc
 install.sh
 AGENTS.md
@@ -126,3 +129,4 @@ MIT — see [LICENSE](LICENSE). Vendored `dkjson` remains under David Kolf’s t
 - Usage bars need Claude subscriber `rate_limits` on stdin.
 - `config.jsonc` changes apply on the next statusline refresh (no reinstall).
 - Custom `ANTHROPIC_BASE_URL` is **not** treated as an HTTP proxy; only `HTTP(S)_PROXY` / `ALL_PROXY`.
+- **pi**: the extension uses TypeScript natively (no luajit needed). Config is read from `~/.config/agent-hud/config.jsonc` or `$AGENT_HUD_CONFIG`. Cache TTL countdown is not available for pi (Claude-specific).

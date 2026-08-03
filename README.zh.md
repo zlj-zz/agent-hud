@@ -1,19 +1,20 @@
 # agent-hud
 
-给 **Claude Code** / **Cursor CLI** 用的轻量双行 statusline。
+给 **Claude Code** / **Cursor CLI** / **pi** 用的轻量双行 statusline。
 
 ## 快速安装
 
 ```bash
 git clone https://github.com/zlj-zz/agent-hud.git ~/projects/agent-hud
 cd ~/projects/agent-hud
-brew install luajit    # 如未安装
-./install.sh           # 默认同时装 Claude + Cursor
+brew install luajit    # 如未安装（仅 Claude/Cursor 需要）
+./install.sh           # 默认同时装 Claude + Cursor + pi
 # ./install.sh --claude
 # ./install.sh --cursor
+# ./install.sh --pi
 ```
 
-装完后请 **重启** Claude Code / Cursor CLI 会话。
+装完后请 **重启** Claude Code / Cursor CLI 会话；pi 运行 `/reload` 即可。
 
 交给 coding agent 安装时，请其遵循 [AGENTS.md](AGENTS.md)。
 
@@ -34,14 +35,16 @@ brew install luajit    # 如未安装
 
 ## 安装会改什么
 
-| 目标 | 脚本 | 配置 |
+| 目标 | 脚本 / 扩展 | 配置 |
 |------|------|------|
 | Claude Code | `~/.claude/statusline.sh` | `~/.claude/settings.json` → `statusLine` |
 | Cursor CLI | `~/.cursor/statusline.sh` | `$XDG_CONFIG_HOME/cursor/cli-config.json`（或 `~/.cursor` / `$CURSOR_CONFIG_DIR`） |
+| pi | `~/.pi/agent/extensions/agent-hud/index.ts` | 自动发现（无需改配置） |
 
-- 会 **覆盖** 已有 `statusLine`
+- 会 **覆盖** 已有 `statusLine`（Claude/Cursor）
 - 默认写入指向本仓库 `bin/*.sh` 的 wrapper，`git pull` 即可更新
 - Cursor：自定义 statusline 会 **替换** 原生 footer；本 HUD 会在有数据时补回 `autorun` 等信号
+- pi：TypeScript 原生扩展，无需 luajit；配置读取 `~/.config/agent-hud/config.jsonc` 或 `$AGENT_HUD_CONFIG`
 
 ## 配置（`config.jsonc`）
 
