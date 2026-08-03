@@ -3,8 +3,8 @@
 Lightweight dual-line statusline for **Claude Code** and **Cursor CLI**.
 
 ```
-◆ Opus 4.6 ● max  ·  my-project  ·  git:main*
-Context ▰▰▰▰▰▱▱▱▱▱  45%  │  Usage ▰▰▰▱▱▱▱▱▱▱  25% · 1h30m  │  Cache ⏱ 4m 12s
+◆ Opus 4.6 ● max · ~/projects/my-project · git:main*
+Context ▰▰▰▰▰▱▱▱▱▱ 45% │ Usage ▰▰▰▱▱▱▱▱▱▱ 25% · 1h30m │ Cache ⏱ 4m 12s
 ```
 
 ## Design

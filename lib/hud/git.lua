@@ -40,7 +40,7 @@ function M.segment(cwd)
     if untracked then dirty = "*" end
   end
   return string.format(
-    "  %s·%s  %sgit:%s%s%s%s%s",
+    " %s·%s %sgit:%s%s%s%s%s",
     ansi.DIM, ansi.RST, ansi.MAGENTA, ansi.CYAN, branch, ansi.YELLOW, dirty, ansi.RST
   )
 end

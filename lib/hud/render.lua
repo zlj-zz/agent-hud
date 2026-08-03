@@ -46,7 +46,7 @@ local function join_parts(parts)
   for _, p in ipairs(parts) do
     if p and p ~= "" then out[#out + 1] = p end
   end
-  return table.concat(out, "  " .. ansi.DIM .. "│" .. ansi.RST .. "  ")
+  return table.concat(out, " " .. ansi.DIM .. "│" .. ansi.RST .. " ")
 end
 
 function M.claude(payload)
@@ -62,7 +62,7 @@ function M.claude(payload)
   local week = util.floor_pct(seven.used_percentage)
 
   local line1 = string.format(
-    "%s◆%s %s%s%s%s  %s·%s  %s%s%s%s",
+    "%s◆%s %s%s%s%s %s·%s %s%s%s%s",
     ansi.BOLD .. ansi.CYAN, ansi.RST,
     ansi.BOLD .. ansi.CYAN, model, ansi.RST, effort.segment(effort.level(payload)),
     ansi.DIM, ansi.RST,
@@ -132,16 +132,16 @@ function M.cursor(payload)
   local extra = git.segment(cwd)
   if type(worktree) == "string" and worktree ~= "" then
     extra = extra .. string.format(
-      "  %s·%s  %swt:%s%s%s",
+      " %s·%s %swt:%s%s%s",
       ansi.DIM, ansi.RST, ansi.MAGENTA, ansi.CYAN, worktree, ansi.RST
     )
   end
   if type(vim_mode) == "string" and vim_mode ~= "" then
-    extra = extra .. string.format("  %s·%s  %s%s%s", ansi.DIM, ansi.RST, ansi.DIM, vim_mode, ansi.RST)
+    extra = extra .. string.format(" %s·%s %s%s%s", ansi.DIM, ansi.RST, ansi.DIM, vim_mode, ansi.RST)
   end
 
   local line1 = string.format(
-    "%s◆%s %s%s%s%s  %s·%s  %s%s%s%s",
+    "%s◆%s %s%s%s%s %s·%s %s%s%s%s",
     ansi.BOLD .. ansi.CYAN, ansi.RST,
     ansi.BOLD .. ansi.CYAN, model, ansi.RST, model_extra,
     ansi.DIM, ansi.RST,
