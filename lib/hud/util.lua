@@ -49,6 +49,29 @@ function M.project_name(cwd)
   return cwd:match("([^/]+)$") or cwd
 end
 
+-- cwd_style: "name" | "short" | "full"
+-- short → ~/projects/foo (HOME collapsed); name → basename; full → absolute.
+function M.display_cwd(cwd, style)
+  if not cwd or cwd == "" then return "?" end
+  style = style or "short"
+  if style == "name" then
+    return M.project_name(cwd)
+  end
+  if style == "full" then
+    return cwd
+  end
+  -- short (default)
+  local home = os.getenv("HOME")
+  if home and home ~= "" then
+    if cwd == home then return "~" end
+    local prefix = home:gsub("/$", "") .. "/"
+    if cwd:sub(1, #prefix) == prefix then
+      return "~/" .. cwd:sub(#prefix + 1)
+    end
+  end
+  return cwd
+end
+
 function M.read_stdin()
   local chunks = {}
   while true do

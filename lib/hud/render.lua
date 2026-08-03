@@ -66,7 +66,7 @@ function M.claude(payload)
     ansi.BOLD .. ansi.CYAN, ansi.RST,
     ansi.BOLD .. ansi.CYAN, model, ansi.RST, effort.segment(effort.level(payload)),
     ansi.DIM, ansi.RST,
-    ansi.YELLOW, util.project_name(cwd), ansi.RST,
+    ansi.YELLOW, util.display_cwd(cwd, config.values.cwd_style), ansi.RST,
     git.segment(cwd)
   )
 
@@ -145,7 +145,7 @@ function M.cursor(payload)
     ansi.BOLD .. ansi.CYAN, ansi.RST,
     ansi.BOLD .. ansi.CYAN, model, ansi.RST, model_extra,
     ansi.DIM, ansi.RST,
-    ansi.YELLOW, util.project_name(cwd), ansi.RST,
+    ansi.YELLOW, util.display_cwd(cwd, config.values.cwd_style), ansi.RST,
     extra
   )
 

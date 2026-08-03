@@ -12,6 +12,8 @@ M.values = {
   show_effort = true,
   show_prompt_cache = true,
   prompt_cache_ttl = 300,
+  -- "name" (basename) | "short" (~/…) | "full"
+  cwd_style = "short",
 }
 
 M.root = "."
@@ -133,6 +135,14 @@ local function apply(obj)
     cfg.prompt_cache_ttl = math.floor(ttl)
   elseif type(ttl) == "string" and ttl:match("^%d+$") and tonumber(ttl) > 0 then
     cfg.prompt_cache_ttl = tonumber(ttl)
+  end
+
+  local cwd_style = obj.cwd_style
+  if type(cwd_style) == "string" then
+    cwd_style = cwd_style:lower()
+    if cwd_style == "name" or cwd_style == "short" or cwd_style == "full" then
+      cfg.cwd_style = cwd_style
+    end
   end
 end
 

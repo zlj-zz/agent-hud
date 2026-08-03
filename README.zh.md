@@ -31,6 +31,8 @@ cd ~/projects/agent-hud
 {
   // "en" | "zh"
   "language": "zh",
+  // "name" 仅目录名 | "short" ~/… | "full" 绝对路径
+  "cwd_style": "short",
   "bar_filled": "▰",
   "bar_empty": "▱",
   "show_effort": true,

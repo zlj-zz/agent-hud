@@ -49,6 +49,8 @@ JSONC (`//` and `/* */` comments). Comments are stripped before `dkjson` — no 
 {
   // "en" | "zh"
   "language": "en",
+  // "name" | "short" | "full"
+  "cwd_style": "short",
   "bar_filled": "▰",
   "bar_empty": "▱",
   "show_effort": true,
@@ -61,6 +63,7 @@ JSONC (`//` and `/* */` comments). Comments are stripped before `dkjson` — no 
 | Key | Default | Meaning |
 |-----|---------|---------|
 | `language` | `en` | `zh` / `en` labels |
+| `cwd_style` | `short` | Path display: basename / `~/…` / absolute |
 | `bar_filled` / `bar_empty` | `▰` / `▱` | Progress glyphs |
 | `show_effort` | `true` | Model effort badge |
 | `show_prompt_cache` | `true` | Cache countdown via transcript tail scan |

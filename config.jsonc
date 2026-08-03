@@ -2,6 +2,9 @@
   // Label language: "en" | "zh"
   "language": "en",
 
+  // Path on line 1: "name" (basename) | "short" (~/…) | "full"
+  "cwd_style": "short",
+
   // Progress bar glyphs
   "bar_filled": "▰",
   "bar_empty": "▱",
