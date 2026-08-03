@@ -3,9 +3,24 @@
 Lightweight dual-line statusline for **Claude Code** and **Cursor CLI**.
 
 ```
-◆ Opus 4.6 ● max · ~/projects/my-project · git:main*
-Context ▰▰▰▰▰▱▱▱▱▱ 45% │ Usage ▰▰▰▱▱▱▱▱▱▱ 25% · 1h30m │ Cache ⏱ 4m 12s
+◆ Opus 4.6 ● max · ~/projects/my-project · git:main* · ⇄
+Context ▰▰▰▰▰▱▱▱▱▱ 45% │ Usage ▰▰▰▱▱▱▱▱▱▱ 25% · 1h30m │ Hit 85% │ Cache ⏱ 4m 12s
 ```
+
+## Quick install
+
+```bash
+git clone https://github.com/zlj-zz/agent-hud.git ~/projects/agent-hud
+cd ~/projects/agent-hud
+brew install luajit    # if needed
+./install.sh           # Claude + Cursor
+# ./install.sh --claude
+# ./install.sh --cursor
+```
+
+Then **restart** the Claude Code / Cursor CLI session.
+
+Coding agents: follow [AGENTS.md](AGENTS.md).
 
 ## Design
 
@@ -18,25 +33,25 @@ Context ▰▰▰▰▰▱▱▱▱▱ 45% │ Usage ▰▰▰▱▱▱▱▱▱
 
 - `luajit` (e.g. `brew install luajit`)
 - `git`
+- `python3` (used by `install.sh` to update settings JSON)
 - macOS / Linux
 
-## Install
-
-```bash
-cd ~/projects/agent-hud
-./install.sh            # both
-# ./install.sh --claude
-# ./install.sh --cursor
-```
+## What `./install.sh` changes
 
 | Target | Script | Config |
 |--------|--------|--------|
-| Claude Code | `~/.claude/statusline.sh` | `~/.claude/settings.json` |
-| Cursor CLI | `~/.cursor/statusline.sh` | `$XDG_CONFIG_HOME/cursor/cli-config.json` (or `~/.cursor`) |
+| Claude Code | `~/.claude/statusline.sh` | `~/.claude/settings.json` → `statusLine` |
+| Cursor CLI | `~/.cursor/statusline.sh` | `$XDG_CONFIG_HOME/cursor/cli-config.json` (or `~/.cursor`, or `$CURSOR_CONFIG_DIR`) |
+
+- Existing `statusLine` entries are **replaced**
+- Default install writes a small wrapper that `exec`s this repo’s `bin/*.sh` (so `git pull` picks up updates)
+- `./install.sh --link` symlinks instead
+- Cursor: a custom statusline **replaces** the native footer (model/Auto-review row); this HUD re-adds useful bits such as `autorun` when present
 
 ## Preview
 
 ```bash
+./bin/claude.sh --version   # agent-hud 0.1.0
 echo '{"model":{"display_name":"Opus"},"cwd":"'"$PWD"'","context_window":{"used_percentage":42},"effort":{"level":"high"}}' \
   | ./bin/claude.sh
 ```
@@ -79,6 +94,13 @@ JSONC (`//` and `/* */` comments). Comments are stripped before `dkjson` — no 
 Lookup: `$AGENT_HUD_CONFIG` → `~/.config/agent-hud/config.jsonc` → repo `config.jsonc`  
 (also accepts plain `.json`)
 
+## Update
+
+```bash
+cd ~/projects/agent-hud && git pull
+# re-run ./install.sh only if the clone path changed
+```
+
 ## Layout
 
 ```
@@ -92,10 +114,7 @@ lib/hud/                        # self-contained library package
   cache.lua proxy.lua render.lua
 config.jsonc
 install.sh
-```
-
-```bash
-./bin/claude.sh --version   # agent-hud 0.1.0
+AGENTS.md
 ```
 
 ## License
@@ -104,6 +123,6 @@ MIT — see [LICENSE](LICENSE). Vendored `dkjson` remains under David Kolf’s t
 
 ## Notes
 
-- Cursor’s built-in footer is separate from this statusline.
 - Usage bars need Claude subscriber `rate_limits` on stdin.
-- Restart the CLI session after first install; `config.jsonc` changes apply on next refresh.
+- `config.jsonc` changes apply on the next statusline refresh (no reinstall).
+- Custom `ANTHROPIC_BASE_URL` is **not** treated as an HTTP proxy; only `HTTP(S)_PROXY` / `ALL_PROXY`.
