@@ -46,3 +46,7 @@ cd ~/projects/agent-hud
 ```bash
 echo '{"model":{"display_name":"Opus"},"cwd":"'"$PWD"'","context_window":{"used_percentage":42},"effort":{"level":"high"}}' | ./bin/claude.sh
 ```
+
+## 许可
+
+MIT — 见 [LICENSE](LICENSE)。内置的 `dkjson` 仍按 David Kolf 的条款（与 MIT 兼容）。

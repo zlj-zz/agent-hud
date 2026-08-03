@@ -89,6 +89,10 @@ install.sh
 ./bin/claude.sh --version   # agent-hud 0.1.0
 ```
 
+## License
+
+MIT — see [LICENSE](LICENSE). Vendored `dkjson` remains under David Kolf’s terms (also MIT-compatible).
+
 ## Notes
 
 - Cursor’s built-in footer is separate from this statusline.
