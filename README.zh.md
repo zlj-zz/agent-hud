@@ -11,6 +11,8 @@
 
 版本号在 `lib/hud/version.lua`，可用 `./bin/claude.sh --version` 查看。
 
+`Hit` / `命中`：上一轮 `cache_read / (input + creation + read)`；`Cache ⏱`：按 transcript 估 TTL。两者独立开关。
+
 ## 依赖
 
 - `luajit`（`brew install luajit`）
@@ -37,7 +39,8 @@ cd ~/projects/agent-hud
   "bar_empty": "▱",
   "show_effort": true,
   "show_prompt_cache": true,
-  "prompt_cache_ttl": 300
+  "prompt_cache_ttl": 300,
+  "show_cache_hit": true
 }
 ```
 

@@ -17,6 +17,9 @@
   // Seconds; use 3600 for Max-style 1h windows
   "prompt_cache_ttl": 300,
 
+  // Last-turn cache hit % from context_window.current_usage
+  "show_cache_hit": true,
+
   // Show 7-day usage when at/above this percent
   "week_threshold": 80
 }

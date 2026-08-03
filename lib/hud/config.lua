@@ -11,6 +11,7 @@ M.values = {
   bar_empty = "▱",
   show_effort = true,
   show_prompt_cache = true,
+  show_cache_hit = true,
   prompt_cache_ttl = 300,
   -- "name" (basename) | "short" (~/…) | "full"
   cwd_style = "short",
@@ -129,6 +130,8 @@ local function apply(obj)
   if se ~= nil then cfg.show_effort = se end
   local sc = util.parse_bool(obj.show_prompt_cache)
   if sc ~= nil then cfg.show_prompt_cache = sc end
+  local sh = util.parse_bool(obj.show_cache_hit)
+  if sh ~= nil then cfg.show_cache_hit = sh end
 
   local ttl = obj.prompt_cache_ttl
   if type(ttl) == "number" and ttl > 0 then

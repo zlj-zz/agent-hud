@@ -56,6 +56,7 @@ JSONC (`//` and `/* */` comments). Comments are stripped before `dkjson` — no 
   "show_effort": true,
   "show_prompt_cache": true,
   "prompt_cache_ttl": 300,
+  "show_cache_hit": true,
   "week_threshold": 80
 }
 ```
@@ -66,8 +67,9 @@ JSONC (`//` and `/* */` comments). Comments are stripped before `dkjson` — no 
 | `cwd_style` | `short` | Path display: basename / `~/…` / absolute |
 | `bar_filled` / `bar_empty` | `▰` / `▱` | Progress glyphs |
 | `show_effort` | `true` | Model effort badge |
-| `show_prompt_cache` | `true` | Cache countdown via transcript tail scan |
+| `show_prompt_cache` | `true` | Cache TTL countdown via transcript tail scan |
 | `prompt_cache_ttl` | `300` | Seconds (use `3600` for Max-style 1h) |
+| `show_cache_hit` | `true` | Last-turn cache hit % from `current_usage` |
 | `week_threshold` | `80` | Show 7-day usage at/above this % |
 
 Lookup: `$AGENT_HUD_CONFIG` → `~/.config/agent-hud/config.jsonc` → repo `config.jsonc`  

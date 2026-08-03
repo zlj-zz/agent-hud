@@ -8,6 +8,7 @@ local labels = {
     week = "7天",
     waiting = "等待会话数据…",
     cache = "缓存",
+    hit = "命中",
     expired = "已过期",
   },
   en = {
@@ -16,6 +17,7 @@ local labels = {
     week = "7d",
     waiting = "Waiting for session data…",
     cache = "Cache",
+    hit = "Hit",
     expired = "expired",
   },
 }

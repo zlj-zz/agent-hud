@@ -95,7 +95,9 @@ function M.claude(payload)
       wc .. ansi.BOLD, week, ansi.RST
     )
   end
-  local cache_seg = cache.segment(transcript)
+  local hit_seg = cache.hit_segment(payload, "claude")
+  if hit_seg ~= "" then parts[#parts + 1] = hit_seg end
+  local cache_seg = cache.ttl_segment(transcript)
   if cache_seg ~= "" then parts[#parts + 1] = cache_seg end
 
   local line2 = join_parts(parts)
@@ -151,7 +153,9 @@ function M.cursor(payload)
 
   local parts = {}
   if ctx then parts[#parts + 1] = context_segment(ctx) end
-  local cache_seg = cache.segment(transcript)
+  local hit_seg = cache.hit_segment(payload, "cursor")
+  if hit_seg ~= "" then parts[#parts + 1] = hit_seg end
+  local cache_seg = cache.ttl_segment(transcript)
   if cache_seg ~= "" then parts[#parts + 1] = cache_seg end
   local line2 = join_parts(parts)
   if line2 == "" then line2 = ansi.DIM .. i18n.t("waiting") .. ansi.RST end
