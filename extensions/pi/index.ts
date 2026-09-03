@@ -318,6 +318,13 @@ function getEffortSegment(level: string | undefined, show: boolean): string {
   return ` ${magenta}${effortSymbol(level)}${rst} ${dim}${level}${rst}`;
 }
 
+// ─── Model label ───────────────────────────────────────────────────────────
+
+/** Prefer pi's human-readable model name over the API model ID. */
+function modelLabel(model: { name: string; id: string } | undefined): string {
+  return model?.name || model?.id || "?";
+}
+
 // ─── Render ────────────────────────────────────────────────────────────────
 
 function renderLines(
@@ -373,14 +380,14 @@ export default function (pi: ExtensionAPI) {
 
   pi.on("session_start", async (_event, ctx) => {
     if (ctx.model) {
-      currentModelName = ctx.model.displayName ?? ctx.model.id ?? "?";
+      currentModelName = modelLabel(ctx.model);
       currentThinkingLevel = ctx.thinkingLevel;
     }
     refresh({ cwd: ctx.cwd, ui: ctx.ui });
   });
 
   pi.on("model_select", async (event, ctx) => {
-    currentModelName = event.model.displayName ?? event.model.id ?? "?";
+    currentModelName = modelLabel(event.model);
     currentThinkingLevel = ctx.thinkingLevel;
     refresh({ cwd: ctx.cwd, ui: ctx.ui });
   });
@@ -395,7 +402,7 @@ export default function (pi: ExtensionAPI) {
     contextPct = floorPct(usage?.percent);
     currentThinkingLevel = ctx.thinkingLevel;
     if (ctx.model) {
-      currentModelName = ctx.model.displayName ?? ctx.model.id ?? "?";
+      currentModelName = modelLabel(ctx.model);
     }
     refresh({ cwd: ctx.cwd, ui: ctx.ui });
   });
