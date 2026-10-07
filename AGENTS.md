@@ -35,6 +35,7 @@ Already cloned: `cd ~/projects/agent-hud && git pull && ./install.sh`
 - `git`
 - `python3` (merges `statusLine` into settings JSON)
 - macOS or Linux
+- pi coding agent 1.0.x (pi target only; verified against 1.0.3)
 
 ## What install changes
 

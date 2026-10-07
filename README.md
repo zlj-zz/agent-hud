@@ -37,6 +37,8 @@ Coding agents: follow [AGENTS.md](AGENTS.md).
 - `python3` (used by `install.sh` to update settings JSON)
 - macOS / Linux
 
+For the pi target: pi coding agent 1.0.x (verified against 1.0.3).
+
 ## What `./install.sh` changes
 
 | Target | Script / Extension | Config |
